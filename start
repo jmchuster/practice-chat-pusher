@@ -1,0 +1,4 @@
+#!/bin/sh
+
+pip install -q -r requirements.txt
+heroku local web
