@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 import os
@@ -21,7 +21,8 @@ class JsonStatus:
 # Create your views here.
 def index(request):
     # return HttpResponse('Hello from Python!')
-    return render(request, 'index.html')
+    # return render(request, 'index.html')
+    return redirect('chat')
 
 @require_http_methods(['GET', 'POST'])
 def chat(request):

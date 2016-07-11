@@ -13,6 +13,6 @@ urlpatterns = [
     url(r'^$', hello.views.index, name='index'),
     url(r'^chat/auth', hello.views.auth, name='auth'),
     url(r'^chat', hello.views.chat, name='chat'),
-    url(r'^db', hello.views.db, name='db'),
-    url(r'^admin/', include(admin.site.urls)),
+    # url(r'^db', hello.views.db, name='db'),
+    # url(r'^admin/', include(admin.site.urls)),
 ]
