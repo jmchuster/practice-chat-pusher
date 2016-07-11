@@ -11,16 +11,28 @@
 <script type='text/javascript' src="{% static 'js/chat.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}" />
 
-<ul id='messages' class="list-unstyled">
-</ul>
-
-<form class="form-inline" action="{% url 'chat' %}" method="post">
+<form action="{% url 'chat' %}" method="post">
   {% csrf_token %}
-  <div class="form-group">
-    <input type="text" class="form-control" id="username" placeholder="Username">
-    <input type="text" class="form-control" id="message" placeholder="Chat...">
+
+  <div class='row'>
+    <div class='col-sm-8'>
+      <ul id='messages' class="list-unstyled">
+      </ul>
+    </div>
+    <div class='col-sm-4'>
+      <input type="text" class="form-control" id="username" placeholder="Username">
+      <h4><span id='user-count'>0</span> people here</h4>
+      <ul id='users' class='list-unstyled'>
+      </ul>
+    </div>
   </div>
-  <button type="submit" class="btn btn-default" id='ok'>OK</button>
+
+  <div class="input-group">
+    <input type="text" class="form-control" id="message" placeholder="Chat...">
+    <span class="input-group-btn">
+      <input class="btn btn-default" type="submit" id='ok' value='Send!' />
+    </span>
+  </div>
 </form>
 
 {% endblock %}

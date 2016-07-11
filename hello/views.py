@@ -1,20 +1,21 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
-from pusher import Pusher
 import os
+import uuid
 from datetime import datetime
+from pusher import Pusher
 
 from .models import Greeting
 
 class JsonStatus:
-    def Ok(message = '', data = {}):
+    def Ok(message='', data={}):
         return JsonResponse({**data, **{'status': 'OK', 'message': message}})
 
-    def Noop(message = '', data = {}):
+    def Noop(message='', data={}):
         return JsonResponse({**data, **{'status': 'NOOP', 'message': message}})
 
-    def Error(message = '', data = {}):
+    def Error(message='', data={}):
         return JsonResponse({**data, **{'status': 'ERROR', 'message': message}})
 
 # Create your views here.
@@ -34,17 +35,41 @@ def chat(request):
         username = request.POST.get('username', '').strip() or 'anonymous'
 
         pusher = Pusher(
-          app_id = os.environ.get('PUSHER_APP_ID'),
-          key = os.environ.get('PUSHER_APP_KEY'),
-          secret = os.environ.get('PUSHER_APP_SECRET')
+          app_id=os.environ.get('PUSHER_APP_ID'),
+          key=os.environ.get('PUSHER_APP_KEY'),
+          secret=os.environ.get('PUSHER_APP_SECRET')
         )
 
-        pusher.trigger('chat_channel', 'message_event', {
+        pusher.trigger('presence-chat_channel', 'message_event', {
             'username': username,
             'message': message,
             'timestamp': datetime.utcnow().isoformat()
         })
         return JsonStatus.Ok()
+
+@require_http_methods(['POST'])
+def auth(request):
+    pusher = Pusher(
+        app_id=os.environ.get('PUSHER_APP_ID'),
+        key=os.environ.get('PUSHER_APP_KEY'),
+        secret=os.environ.get('PUSHER_APP_SECRET')
+    )
+
+    user_id = request.COOKIES.get('user_id') or uuid.uuid4().hex
+
+    auth = pusher.authenticate(
+        channel=request.POST.get('channel_name', ''),
+        socket_id=request.POST.get('socket_id', ''),
+        custom_data={
+            'user_id': user_id,
+            'user_info': {
+                'username': 'anon_' + str(hash(user_id) % 1000) # semi-random number up to 1000
+            }
+        })
+
+    response = JsonResponse(auth)
+    response.set_cookie('user_id', user_id, httponly=True)
+    return response
 
 def db(request):
 
