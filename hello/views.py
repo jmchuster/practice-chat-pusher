@@ -26,7 +26,6 @@ def chat(request):
     if request.method == 'GET':
         return render(request, 'chat.html')
     elif request.method == 'POST':
-        import pdb; pdb.set_trace()
         message = request.POST.get('message', '').strip()
         if len(message) == 0:
             return JsonStatus.Noop()
