@@ -1,5 +1,14 @@
 $(function() {
 
+  var pusher = new Pusher(ENV['PUSHER_APP_KEY'], {
+    encrypted: true
+  });
+
+  var channel = pusher.subscribe('chat_channel');
+  channel.bind('message_event', function(data) {
+    $('#messages').append('<li>' + data.message + '</li>');
+  });
+
   $('form').submit(function(event) {
     event.preventDefault();
 

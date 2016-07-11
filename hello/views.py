@@ -24,7 +24,7 @@ def index(request):
 @require_http_methods(['GET', 'POST'])
 def chat(request):
     if request.method == 'GET':
-        return render(request, 'chat.html')
+        return render(request, 'chat.html', { 'pusher_app_key': os.environ.get('PUSHER_APP_KEY') })
     elif request.method == 'POST':
         message = request.POST.get('message', '').strip()
         if len(message) == 0:
