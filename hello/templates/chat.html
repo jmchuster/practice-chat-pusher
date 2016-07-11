@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<form action="{% url 'chat' %}" method="post">
+    {% csrf_token %}
+    <label for="message">Message: </label>
+    <input id="message" type="text" name="message" value="">
+    <input type="submit" value="OK">
+</form>
+{% endblock %}
