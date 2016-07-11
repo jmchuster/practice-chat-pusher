@@ -13,12 +13,14 @@ $(function() {
     }
   });
 
+  var timeToString = function(time) {
+      return (time.getHours() % 12 || 12)  + ':' + time.getMinutes() + ' ' + (time.getHours() >= 12 ? 'AM' : 'PM');
+  };
+
   var addMessage = function(data) {
-    var date = new Date(data.timestamp);
-    var dateString = (date.getHours() % 12 || 12)  + ':' + date.getMinutes() + ' ' + (date.getHours() >= 12 ? 'AM' : 'PM');
     $('#messages').append(
       '<li>' +
-        data.username + ' (' + dateString + '): ' + data.message +
+        data.username + ' (' + timeToString(new Date(data.timestamp)) + '): ' + data.message +
       '</li>');
   };
 
@@ -32,10 +34,14 @@ $(function() {
         .addClass('strong')
         .prepend("<i class='fa fa-fw fa-sign-in'></i>");
       window.setTimeout(function() {
-        debugger;
         $('.user[data-id=' + member.id + ']').removeClass('strong');
         $('.user[data-id=' + member.id + '] i').remove();
       }, 2 * 1000);
+
+      $('#messages').append(
+        '<li><i>' +
+          member.info.username + ' has joined the room (' + timeToString(new Date()) + ')' +
+        '</i></li>');
     }
   };
 
@@ -47,6 +53,10 @@ $(function() {
     window.setTimeout(function() {
       $('.user[data-id=' + member.id + ']').remove();
     }, 2 * 1000);
+    $('#messages').append(
+      '<li><i>' +
+        member.info.username + ' has left the room (' + timeToString(new Date()) + ')' +
+      '</i></li>');
   };
 
   var channel = pusher.subscribe('presence-chat_channel');
@@ -64,6 +74,11 @@ $(function() {
         addMember(member);
       }
     });
+
+    $('#messages').append(
+      '<li><i>' +
+        'You have joined the room (' + timeToString(new Date()) + ')' +
+      '</i></li>');
 
     subscribed = true;
     $("#ok").prop('disabled', false);
