@@ -24,9 +24,9 @@ $(function() {
 
   var addMember = function(member) {
     $('#users').append(
-      '<li>' +
+      '<option>' +
         member.info.username +
-      '</li>');
+      '</option>');
   };
 
   var channel = pusher.subscribe('presence-chat_channel');
