@@ -2,4 +2,4 @@
 
 pip install -q -r requirements.txt
 pip freeze > requirements.txt
-heroku local web
+python manage.py runserver
