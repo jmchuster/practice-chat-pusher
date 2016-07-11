@@ -9,7 +9,12 @@ $(function() {
 
   var channel = pusher.subscribe('chat_channel');
   channel.bind('message_event', function(data) {
-    $('#messages').append('<li>' + data.message + '</li>');
+    var date = new Date(data.timestamp);
+    var dateString = (date.getHours() % 12 || 12)  + ':' + date.getMinutes() + ' ' + (date.getHours() >= 12 ? 'AM' : 'PM');
+    $('#messages').append(
+      '<li>' +
+        data.username + ' (' + dateString + '): ' + data.message +
+      '</li>');
   });
   channel.bind('pusher:subscription_succeeded', function() {
     subscribed = true;
@@ -23,8 +28,10 @@ $(function() {
       return;
     }
 
-    var message = $('#message').val();
-    if (message.trim() === '') {
+    var username = $('#username').val().trim();
+
+    var message = $('#message').val().trim();
+    if (message === '') {
       return;
     }
     $('#message').val('');
@@ -34,6 +41,7 @@ $(function() {
       url: $(this).attr('action'),
       data: {
         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        username: username,
         message: message
       },
       dataType: 'json',

@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 from pusher import Pusher
 import os
+from datetime import datetime
 
 from .models import Greeting
 
@@ -30,13 +31,19 @@ def chat(request):
         if len(message) == 0:
             return JsonStatus.Noop()
 
+        username = request.POST.get('username', '').strip() or 'anonymous'
+
         pusher = Pusher(
           app_id = os.environ.get('PUSHER_APP_ID'),
           key = os.environ.get('PUSHER_APP_KEY'),
           secret = os.environ.get('PUSHER_APP_SECRET')
         )
 
-        pusher.trigger('chat_channel', 'message_event', {'message': message})
+        pusher.trigger('chat_channel', 'message_event', {
+            'username': username,
+            'message': message,
+            'timestamp': datetime.utcnow().isoformat()
+        })
         return JsonStatus.Ok()
 
 def db(request):
