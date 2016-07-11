@@ -85,9 +85,11 @@ $(function() {
   });
   channel.bind('pusher:member_added', function(member) {
     addMember(member, true);
+    $('#user-count').html(Math.max(0, channel.members.count - 1));
   });
   channel.bind('pusher:member_removed', function(member) {
     removeMember(member);
+    $('#user-count').html(Math.max(0, channel.members.count - 1));
   });
 
   $('form').submit(function(event) {
