@@ -1,9 +1,14 @@
 #messages {
   height: 400px;
+  padding: 10px;
   overflow: auto;
 }
 
 #users {
-  height: 370px;
+  height: 327px;
   overflow: auto;
+}
+
+#users .user {
+  padding: 5px 10px;
 }

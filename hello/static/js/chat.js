@@ -22,11 +22,31 @@ $(function() {
       '</li>');
   };
 
-  var addMember = function(member) {
-    $('#users').append(
-      '<option>' +
+  var addMember = function(member, newMember) {
+    $('#users').prepend(
+      "<li class='user' data-id='" + member.id + "'>" +
         member.info.username +
-      '</option>');
+      '</li>');
+    if (newMember === true) {
+      $('.user[data-id=' + member.id + ']')
+        .addClass('strong')
+        .prepend("<i class='fa fa-fw fa-sign-in'></i>");
+      window.setTimeout(function() {
+        debugger;
+        $('.user[data-id=' + member.id + ']').removeClass('strong');
+        $('.user[data-id=' + member.id + '] i').remove();
+      }, 2 * 1000);
+    }
+  };
+
+  var removeMember = function(member) {
+    $('.user[data-id=' + member.id + '] i').remove();
+    $('.user[data-id=' + member.id + ']')
+      .addClass('text-muted')
+      .append("<i class='fa fa-fw fa-sign-out'></i>");
+    window.setTimeout(function() {
+      $('.user[data-id=' + member.id + ']').remove();
+    }, 2 * 1000);
   };
 
   var channel = pusher.subscribe('presence-chat_channel');
@@ -47,6 +67,12 @@ $(function() {
 
     subscribed = true;
     $("#ok").prop('disabled', false);
+  });
+  channel.bind('pusher:member_added', function(member) {
+    addMember(member, true);
+  });
+  channel.bind('pusher:member_removed', function(member) {
+    removeMember(member);
   });
 
   $('form').submit(function(event) {
