@@ -20,7 +20,11 @@ $(function() {
     var roomName = $(this).attr('data-room-name');
 
     // already opened and running
-    if ($('.public-room-panel[data-room-id=' + roomId + ']').length > 0) {
+    var roomPanel = $('.public-room-panel[data-room-id=' + roomId + ']');
+    if (roomPanel.length > 0) {
+      $('html, body').animate({
+          scrollTop: roomPanel.offset().top
+      }, 1000);
       return;
     }
 
