@@ -45,3 +45,10 @@ class WrappedPusher:
             'message': message,
             'timestamp': datetime.utcnow().isoformat()
         })
+
+    def trigger_public_new_room(self, room):
+        self.pusher.trigger('public-public_rooms', 'new_room_event', {
+            'id': room.id,
+            'name': room.name,
+            'channel': room.channel
+        })

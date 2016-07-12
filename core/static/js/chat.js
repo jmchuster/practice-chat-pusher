@@ -2,16 +2,50 @@ $(function() {
 
   var source   = $("#room-template").html();
   var roomTemplate = Handlebars.compile(source);
+  var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+
+  $.ajaxSetup({
+    headers: {
+      'X-CSRFToken': csrfToken
+    }
+  });
 
   var pusher = new Pusher(ENV['PUSHER_APP_KEY'], {
     encrypted: true,
     authEndpoint: '/auth',
     auth: {
       headers: {
-        'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+        'X-CSRFToken': csrfToken
       }
     }
   });
+
+  $('.add-public-room').popover({
+    html: true,
+    content: "<form class='form-public-room'><input type='text' class='new-name-public-room form-control' placeholder='New room name...' /></form>",
+    container: 'body',
+    trigger: 'manual'
+  });
+
+  $('.add-public-room').on('click', function() {
+    $('.add-public-room').popover('show');
+    $('.form-public-room input').focus();
+  });
+
+  $(document).on('submit', '.form-public-room', function(event) {
+    event.preventDefault();
+
+    $.ajax({
+      type: 'POST',
+      url: '/public_rooms',
+      data: {
+        name: $('.new-name-public-room').val()
+      },
+      dataType: 'json'
+    });
+
+    $('.add-public-room').popover('hide');
+  })
 
   $('.public-rooms').on('click', '.public-room', function() {
 
@@ -35,7 +69,7 @@ $(function() {
       roomName: roomName,
       roomTemplate: roomTemplate,
       roomContainer: $('.room-container'),
-      csrftoken: $('input[name=csrfmiddlewaretoken]').val()
+      csrftoken: csrfToken
     });
   });
 

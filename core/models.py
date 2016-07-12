@@ -22,6 +22,7 @@ class FriendRequest(models.Model):
 
 class PublicRoom(models.Model):
     name = models.TextField()
+    created_by = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property

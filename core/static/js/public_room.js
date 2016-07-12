@@ -32,6 +32,8 @@ PublicRoom.prototype.init = function() {
   this.$status = this.$panel.find('.status');
   this.subscribed = false;
 
+  this.$message.focus();
+
   this.$form.on('submit', $.proxy(this.submitForm, this));
 
   this.$btnHide = this.$panel.find('.hide-panel');
