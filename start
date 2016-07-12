@@ -22,6 +22,9 @@ if [ $(docker ps -aqf "name=redis" | wc -c) -eq 0 ]; then
 fi
 docker start redis
 
+# make sure we're in the right venv
+source venv/bin/activate
+
 # install requirements from the build file
 pip install -q -r requirements.txt
 

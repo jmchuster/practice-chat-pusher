@@ -16,12 +16,6 @@ class JsonStatus:
     def Error(message='', data={}):
         return JsonResponse({**data, **{'status': 'ERROR', 'message': message}})
 
-# Create your views here.
-def index(request):
-    # return HttpResponse('Hello from Python!')
-    # return render(request, 'index.html')
-    return redirect('chat')
-
 @require_http_methods(['GET', 'POST'])
 def chat(request):
     if request.method == 'GET':

@@ -5,7 +5,7 @@ $(function() {
 
   var pusher = new Pusher(ENV['PUSHER_APP_KEY'], {
     encrypted: true,
-    authEndpoint: '/chat/auth',
+    authEndpoint: '/auth',
     auth: {
       headers: {
         'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
