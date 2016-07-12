@@ -1,5 +1,32 @@
 #!/bin/sh
 
+# requires docker-for-mac to be installed
+
+# start db
+if [ $(docker ps -aqf "name=db" | wc -c) -eq 0 ]; then
+  docker run -d --name db \
+    -v "/etc/postgresql" \
+    -v "/var/log/postgresql" \
+    -v "/var/lib/postgresql" \
+    -p 5432:5432 \
+    postgres:9.5.2
+fi
+docker start db
+
+# start redis
+if [ $(docker ps -aqf "name=redis" | wc -c) -eq 0 ]; then
+  docker run -d --name redis \
+    -p 6379:6379 \
+    redis:2.8 \
+    redis-server --appendonly yes
+fi
+docker start redis
+
+# install requirements from the build file
 pip install -q -r requirements.txt
+
+# log any requirements that have been installed recently in venv
 pip freeze > requirements.txt
+
+# start up the server
 python manage.py runserver
