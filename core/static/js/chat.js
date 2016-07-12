@@ -29,6 +29,10 @@ $(function() {
     );
   })
 
+  public_rooms_channel.bind('room_count_event', function(room) {
+    $(".public-room[data-room-channel='" + room.channel + "'] .badge").text(room.count);
+  });
+
 
   $('.add-public-room').popover({
     html: true,
