@@ -52,3 +52,20 @@ class WrappedPusher:
             'name': room.name,
             'channel': room.channel
         })
+
+    # has the room channel, not the room id
+    def trigger_public_room_count(self, channel, count):
+        self.pusher.trigger('public-public_rooms', 'room_count_event', {
+            'channel': channel,
+            'count': count
+        })
+
+    def validate_webhook(self, request):
+        return self.pusher.validate_webhook(
+            key=request.META['HTTP_X_PUSHER_KEY'],
+            signature=request.META['HTTP_X_PUSHER_SIGNATURE'],
+            body=request.body.decode('UTF-8')
+        )
+
+    def channel_count(self, channel):
+        return self.pusher.channel_info(channel, ['user_count'])['user_count']

@@ -82,12 +82,8 @@ PublicRoom.prototype.onSubscriptionSucceeded = function(members) {
   var me = this.channel.members.me;
   var userId = me.id;
 
-  this.$userCount.html(Math.max(0, members.count - 1));
-  members.each($.proxy(function(member) {
-    if (member.id !== userId) {
-      this.addMember(member);
-    }
-  }, this));
+  this.$userCount.html(members.count);
+  members.each($.proxy(this.addMember, this));
 
   this.$messages.append(
     '<li><i>' +
@@ -100,12 +96,12 @@ PublicRoom.prototype.onSubscriptionSucceeded = function(members) {
 
 PublicRoom.prototype.onMemberAdded = function(member) {
   this.addMember(member, true);
-  this.$userCount.html(Math.max(0, this.channel.members.count - 1));
+  this.$userCount.html(this.channel.members.count);
 }
 
 PublicRoom.prototype.onMemberRemoved = function(member) {
   this.removeMember(member);
-  this.$userCount.html(Math.max(0, this.channel.members.count - 1));
+  this.$userCount.html(this.channel.members.count);
 }
 
 PublicRoom.prototype.addMember = function(member, newMember) {

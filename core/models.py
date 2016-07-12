@@ -32,11 +32,6 @@ class PublicRoom(models.Model):
     def count_channel(self):
         return 'public-public_room_count.' + str(self.id)
 
-    @property
-    def count(self):
-        return 0
-
-
 class PublicRoomMessage(models.Model):
     channel = models.ForeignKey(PublicRoom, related_name='messages')
     user = models.TextField()
