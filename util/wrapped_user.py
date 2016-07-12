@@ -35,6 +35,34 @@ class WrappedUser:
             'is_authenticated': self.is_authenticated
         }
 
+    @property
+    def friends(self):
+        if self.is_authenticated:
+            return self.user.friends
+        else:
+            return []
+
+    @property
+    def friend_requests(self):
+        if self.is_authenticated:
+            return self.user.friend_requests
+        else:
+            return []
+
+    @property
+    def private_rooms(self):
+        if self.is_authenticated:
+            return self.user.private_rooms
+        else:
+            return []
+
+    @property
+    def owned_rooms(self):
+        if self.is_authenticated:
+            return self.user.owned_rooms
+        else:
+            return []
+
     def set_cookie(self, response):
         if not self.is_authenticated:
             response.set_cookie('user_id', self.user_id, httponly=True)

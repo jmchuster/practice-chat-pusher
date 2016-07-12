@@ -1,17 +1,20 @@
 from django.template.response import TemplateResponse
-from django.views.decorators.http import require_http_methods
-import os
+from django.views.decorators.http import require_GET
 
-from util import WrappedUser
+from util import WrappedUser, WrappedPusher
+from core.models import PublicRoom
 
-
-@require_http_methods(['GET'])
+@require_GET
 def index(request):
     user = WrappedUser(request)
 
     context = {
-        'pusher_app_key': os.environ.get('PUSHER_APP_KEY'),
-        'user': user
+        'pusher_app_key': WrappedPusher.key(),
+        'user': user,
+        'public_rooms': PublicRoom.objects.all(),
+        'private_rooms': user.private_rooms,
+        'friends': user.friends,
+        'friend_requests': user.friend_requests
     }
     response = TemplateResponse(request, 'index.html', context)
     user.set_cookie(response)

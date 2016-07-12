@@ -1,0 +1,49 @@
+{% verbatim %}
+
+<script id="room-template" type="text/x-handlebars-template">
+
+  <div class='public-room-panel room-panel panel panel-primary' data-room-id='{{room-id}}' data-room-channel='{{room-channel}}'>
+    <div class='panel-heading'>
+      {{room-name}}
+
+      <div class='pull-right buttons'>
+        <i class='hide-panel fa fa-minus-circle'></i>
+        <i class='show-panel fa fa-plus-circle'></i>
+        <i class='close-panel fa fa-times-circle'></i>
+      </div>
+    </div>
+    <div class='panel-body'>
+
+      <div class='row'>
+        <div class='col-sm-8'>
+          <div class='panel panel-default'>
+            <ul class="messages list-unstyled">
+            </ul>
+          </div>
+        </div>
+        <div class='col-sm-4'>
+          <h4><span class='user-count'>0</span> people here</h4>
+          <div class='panel panel-default'>
+            <ul class='users list-unstyled'>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <form action="/public_rooms/{{room-id}}/messages" method="post">
+        <div class="input-group">
+          <input type="text" class="message form-control" name='message' autofocus placeholder="Chat...">
+          <span class="input-group-btn">
+            <input class="send btn btn-default" type="submit" value='Send!' disabled /> <!-- enabled after subscription_succeeded -->
+          </span>
+        </div>
+      </form>
+
+      <em class='status'></em>
+    </div>
+
+  </div>
+
+</script>
+
+{% endverbatim %}

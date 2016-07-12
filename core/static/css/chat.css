@@ -1,14 +1,27 @@
-#messages {
-  height: 400px;
+.room-panel .messages {
+  height: 300px;
   padding: 10px;
   overflow: auto;
 }
 
-#users {
-  height: 327px;
+.room-panel .users {
+  height: 261px;
   overflow: auto;
 }
 
-#users .user {
+.room-panel .users .user {
   padding: 5px 10px;
+}
+
+.room-panel .status {
+  display: block;
+  margin-top: 5px;
+}
+
+.room-panel .buttons {
+  cursor: pointer;
+}
+
+.room-panel .buttons i:hover {
+  font-size: 15px;
 }
