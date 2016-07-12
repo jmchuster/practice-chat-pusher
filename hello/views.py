@@ -69,12 +69,3 @@ def auth(request):
     response = JsonResponse(auth)
     response.set_cookie('user_id', user_id, httponly=True)
     return response
-
-def db(request):
-
-    greeting = Greeting()
-    greeting.save()
-
-    greetings = Greeting.objects.all()
-
-    return render(request, 'db.html', {'greetings': greetings})
