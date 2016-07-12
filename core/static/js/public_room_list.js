@@ -19,7 +19,10 @@ PublicRoomList.prototype.init = function() {
     container: 'body',
     trigger: 'manual'
   });
-  this.$btnAddPublicRoom.on('click', $.proxy(this.addPublicRoom, this));
+  this.$btnAddPublicRoom.on('click', $.proxy(function() {
+    this.$btnAddPublicRoom.popover('show');
+    $('.form-public-room input').focus();
+  }, this));
   $(document).on('submit', '.form-public-room', function(event) {
     event.preventDefault();
 
@@ -61,7 +64,7 @@ PublicRoomList.prototype.subscribeRoom = function(event) {
   var roomName = $(event.target).attr('data-room-name');
 
   // already opened and running
-  var roomPanel = this.$publicRooms.find('.public-room-panel[data-room-id=' + roomId + ']');
+  var roomPanel = this.$roomContainer.find('.public-room-panel[data-room-id=' + roomId + ']');
   if (roomPanel.length > 0) {
     $('html, body').animate({
         scrollTop: roomPanel.offset().top
@@ -78,9 +81,4 @@ PublicRoomList.prototype.subscribeRoom = function(event) {
     roomContainer: this.$roomContainer
   });
 
-}
-
-PublicRoomList.prototype.addPublicRoom = function() {
-  this.$btnAddPublicRoom.popover('show');
-  $('.form-public-room input').focus();
 }
