@@ -6,8 +6,6 @@ import uuid
 from datetime import datetime
 from pusher import Pusher
 
-from .models import Greeting
-
 class JsonStatus:
     def Ok(message='', data={}):
         return JsonResponse({**data, **{'status': 'OK', 'message': message}})
