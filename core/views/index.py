@@ -1,13 +1,12 @@
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_GET
-from redis import Redis
 
-from util import WrappedUser, WrappedPusher
+from util import WrappedUser, WrappedPusher, WrappedRedis
 from core.models import PublicRoom
 
 
 def add_counts(public_rooms):
-    pipeline = Redis().pipeline()
+    pipeline = WrappedRedis().pipeline()
     for room in public_rooms:
         pipeline.get(room.channel)
     counts = pipeline.execute()

@@ -1,8 +1,7 @@
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from redis import Redis
 
-from util import WrappedPusher, JsonStatus
+from util import WrappedPusher, JsonStatus, WrappedRedis
 
 
 @csrf_exempt
@@ -20,7 +19,7 @@ def presence(request):
 
     pusher = WrappedPusher()
 
-    pipeline = Redis().pipeline()
+    pipeline = WrappedRedis().pipeline()
 
     for channel in set(channels):
         user_count = pusher.channel_count(channel)
