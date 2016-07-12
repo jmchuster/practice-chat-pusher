@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 
-
 class Friend(models.Model):
     user = models.ForeignKey(User, related_name='friends')
     friend = models.ForeignKey(User, related_name='+')
@@ -58,6 +57,12 @@ class PrivateRoom(models.Model):
     @property
     def count_channel(self):
         return 'private-private_room_count.' + str(self.id)
+
+
+def private_rooms(self):
+    PrivateRoom.objects.filter(users__contains=[self.id])
+
+User.add_to_class('private_rooms', private_rooms)
 
 
 class PrivateRoomMessage(models.Model):

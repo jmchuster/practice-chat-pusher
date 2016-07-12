@@ -20,6 +20,16 @@ $(function() {
     }
   });
 
+  var public_rooms_channel = pusher.subscribe('public-public_rooms');
+  public_rooms_channel.bind('new_room_event', function(room) {
+    $('.public-rooms').prepend(
+      "<li class='public-room list-group-item' data-room-id='" + room.id + "' data-room-channel='" + room.channel + "' data-room-name='" + room.name + "'>" +
+        room.name + "<span class='public-room-count badge'>0</span>" +
+      "</li>"
+    );
+  })
+
+
   $('.add-public-room').popover({
     html: true,
     content: "<form class='form-public-room'><input type='text' class='new-name-public-room form-control' placeholder='New room name...' /></form>",
