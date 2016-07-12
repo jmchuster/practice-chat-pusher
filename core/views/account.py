@@ -37,7 +37,7 @@ class SignupView(View):
         if password == confirmation:
             user = User.objects.create_user(username=username, password=password)
             user.save()
-            user = authenticate(username, password)
+            user = authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 login(request, user)
                 return redirect('index')
