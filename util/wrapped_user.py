@@ -17,7 +17,7 @@ class WrappedUser:
     @property
     def user_id(self):
         if self.is_authenticated:
-            return self.user.user_id
+            return self.user.id
         else:
             if not self._user_id:
                 self._user_id = self.request.COOKIES.get('user_id') or uuid.uuid4().hex

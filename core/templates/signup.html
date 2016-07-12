@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+  Get ready to sign up!
+{% endblock %}
+{% block css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/account.css' %}" />
+{% endblock %}
+{% block content %}
+
+<div class="container">
+  <form class="form-signin" method="POST">
+    {% csrf_token %}
+    <h2 class="form-signin-heading">Please sign up</h2>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
+    <label for="inputConfirmation" class="sr-only">Confirmation</label>
+    <input type="password" id="inputConfirmation" name="inputConfirmation" class="form-control" placeholder="Confirmation" required>
+    <br/>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+    <br/>
+    <p class='text-center'>
+      <a href='{% url 'login' %}'>Log in</a>
+    </p>
+  </form>
+</div>
+
+{% endblock %}
